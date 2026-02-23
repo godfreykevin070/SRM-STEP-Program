@@ -7,23 +7,26 @@ public class PalindromeCheckerApp {
         Scanner input = new Scanner(System.in);
 
         System.out.print("Input Text: ");
-        String original = input.nextLine();   // Full line input
+        String text = input.nextLine();
 
-        String reversed = "";
+        // Convert String to Character Array
+        char[] characters = text.toCharArray();
 
-        // Reverse string using for loop
-        for (int i = original.length() - 1; i >= 0; i--) {
-            reversed = reversed + original.charAt(i);  // String Concatenation
+        // Two-pointer approach
+        int start = 0;
+        int end = characters.length - 1;
+        boolean isPalindrome = true;
+
+        while (start < end) {
+            if (characters[start] != characters[end]) {
+                isPalindrome = false;
+                break;
+            }
+            start++;
+            end--;
         }
 
-        // Compare using equals()
-        if (original.equals(reversed)) {
-            System.out.println("Reversed Text : " + reversed);
-            System.out.println("Is it a palindrome? : true");
-        } else {
-            System.out.println("Reversed Text : " + reversed);
-            System.out.println("Is it a palindrome? : false");
-        }
+        System.out.println("Is it a palindrome? : " + isPalindrome);
 
         input.close();
     }
