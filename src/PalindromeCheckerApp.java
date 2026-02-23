@@ -1,19 +1,28 @@
+import java.util.Scanner;
+
 public class PalindromeCheckerApp {
-
-    // Application Constants
-    private static final String APP_NAME = "PalindromeChecker App";
-    private static final String VERSION = "Version 1.0";
-
     public static void main(String[] args) {
 
-        // Display Welcome Message
-        System.out.println("===================================");
-        System.out.println(" Welcome to " + APP_NAME);
-        System.out.println(" " + VERSION);
-        System.out.println("===================================");
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("System initialized successfully.");
-        System.out.println("---------------------------------------------------------------");
+        System.out.print("Input Text: ");
+        String word = input.next();
 
+        boolean isPalindrome = true;
+
+        for (int i = 0; i < word.length() / 2; i++) {
+            if (word.charAt(i) != word.charAt(word.length() - 1 - i)) {
+                isPalindrome = false;
+                break;
+            }
+        }
+
+        if (isPalindrome) {
+            System.out.println("Is it a palindrome? : true");
+        } else {
+            System.out.println("Is it a palindrome? : false");
+        }
+
+        input.close();
     }
 }
