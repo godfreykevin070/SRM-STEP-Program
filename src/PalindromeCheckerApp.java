@@ -1,24 +1,45 @@
 import java.util.Scanner;
+import java.util.Stack;
 
-public class PalindromeCheckerApp {
+// PalindromeChecker class (Encapsulated Service)
+class PalindromeChecker {
 
-    static boolean isPalindrome(String text) {
+    private String text;
 
-        // Normalize string
-        String clean = text.replaceAll("\\s+", "").toLowerCase();
+    // Constructor
+    public PalindromeChecker(String text) {
+        this.text = normalize(text);
+    }
 
-        int start = 0;
-        int end = clean.length() - 1;
+    // Private method for normalization (Encapsulation)
+    private String normalize(String input) {
+        return input.replaceAll("\\s+", "").toLowerCase();
+    }
 
-        while (start < end) {
-            if (clean.charAt(start) != clean.charAt(end))
-                return false;
+    // Public method to check palindrome using Stack
+    public boolean checkPalindrome() {
 
-            start++;
-            end--;
+        Stack<Character> stack = new Stack<>();
+
+        // Push all characters into stack
+        for (int i = 0; i < text.length(); i++) {
+            stack.push(text.charAt(i));
         }
+
+        // Compare with original
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) != stack.pop()) {
+                return false;
+            }
+        }
+
         return true;
     }
+}
+
+
+// Application class
+public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
@@ -27,7 +48,13 @@ public class PalindromeCheckerApp {
         System.out.print("Input Text: ");
         String text = input.nextLine();
 
-        System.out.println("Is it a palindrome? : " + isPalindrome(text));
+        // Create object (Encapsulation)
+        PalindromeChecker checker = new PalindromeChecker(text);
+
+        // Call service method
+        boolean result = checker.checkPalindrome();
+
+        System.out.println("Is it a palindrome? : " + result);
 
         input.close();
     }
