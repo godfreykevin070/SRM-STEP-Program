@@ -6,7 +6,7 @@ interface PalindromeStrategy {
 }
 
 
-// Stack Strategy Implementation
+// Stack Strategy
 class StackStrategy implements PalindromeStrategy {
 
     @Override
@@ -31,7 +31,7 @@ class StackStrategy implements PalindromeStrategy {
 }
 
 
-// Deque Strategy Implementation
+// Deque Strategy
 class DequeStrategy implements PalindromeStrategy {
 
     @Override
@@ -56,24 +56,53 @@ class DequeStrategy implements PalindromeStrategy {
 }
 
 
-// Context Class
-class PalindromeChecker {
+// Two Pointer Strategy (Fastest baseline)
+class TwoPointerStrategy implements PalindromeStrategy {
 
-    private PalindromeStrategy strategy;
+    @Override
+    public boolean check(String text) {
 
-    // Constructor Injection
-    public PalindromeChecker(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
+        String clean = text.replaceAll("\\s+", "").toLowerCase();
 
-    public boolean checkPalindrome(String text) {
-        return strategy.check(text);
+        int start = 0;
+        int end = clean.length() - 1;
+
+        while (start < end) {
+            if (clean.charAt(start) != clean.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
+        }
+
+        return true;
     }
 }
 
 
-// Main Application
-public class PalindromeApp {
+// Performance Tester
+class PerformanceTester {
+
+    public static void testStrategy(String name, PalindromeStrategy strategy, String text) {
+
+        long startTime = System.nanoTime();
+
+        boolean result = strategy.check(text);
+
+        long endTime = System.nanoTime();
+
+        long duration = endTime - startTime;
+
+        System.out.println(name + " Result      : " + result);
+        System.out.println(name + " Time (ns)   : " + duration);
+        System.out.println(name + " Time (ms)   : " + duration / 1_000_000.0);
+        System.out.println("----------------------------------");
+    }
+}
+
+
+// Main Class
+public class PalindromePerformanceApp {
 
     public static void main(String[] args) {
 
@@ -82,26 +111,25 @@ public class PalindromeApp {
         System.out.print("Enter text: ");
         String text = input.nextLine();
 
-        System.out.println("\nChoose Strategy:");
-        System.out.println("1. Stack Strategy");
-        System.out.println("2. Deque Strategy");
-        System.out.print("Enter choice: ");
+        System.out.println("\nPerformance Comparison:\n");
 
-        int choice = input.nextInt();
+        PerformanceTester.testStrategy(
+                "Stack Strategy",
+                new StackStrategy(),
+                text
+        );
 
-        PalindromeStrategy strategy;
+        PerformanceTester.testStrategy(
+                "Deque Strategy",
+                new DequeStrategy(),
+                text
+        );
 
-        if (choice == 1) {
-            strategy = new StackStrategy();
-        } else {
-            strategy = new DequeStrategy();
-        }
-
-        PalindromeChecker checker = new PalindromeChecker(strategy);
-
-        boolean result = checker.checkPalindrome(text);
-
-        System.out.println("\nIs Palindrome? : " + result);
+        PerformanceTester.testStrategy(
+                "Two Pointer Strategy",
+                new TwoPointerStrategy(),
+                text
+        );
 
         input.close();
     }
